@@ -8,12 +8,22 @@
 
 int main() {
 	
-	int i,j,x1,x2,linha,coluna,tentativa,n1,vet[4][4]={0};
+	int i,j,x1,x2,linha,coluna,tentativas,n1;
+	char vet[5][5];
 	
-	for(i=0;i<4;i++){
-		for(j=0;j<4;j++){
+	for(i=0;i<5;i++){
+		for(j=0;j<5;j++){
 
-			printf("|%d|",vet[i][j]);			
+			vet[i][j] = '|X';			
+		}
+		
+	}
+	
+	
+	for(i=0;i<5;i++){
+		for(j=0;j<5;j++){
+			
+			printf("|%c|",vet[i][j]);			
 		}
 		
 		printf("\n");
@@ -21,90 +31,97 @@ int main() {
 	
 	srand(time(NULL));
 	
-	x1 = rand() % 4;
-	x2 = rand() % 4;
-	n1 = rand() % 10;
-	vet[x1][x2] = n1;
+	x1 = rand() % 5;
+	x2 = rand() % 5;
+	vet[x1][x2] = '#';
 		
-	printf("%d %d",x1,x2);
+	//printf("%d %d",x1,x2);
 	
-		printf("JOGO DE CACA AO TESOURO \n");
-		printf("* Encontre a posicao onde esta o numero %d na matriz \n",vet[x1][x2]);
-		printf("* Tente adivinhar em que linha e coluna esta o numero %d \n", vet[x1][x2]);
-		printf("* Tens 3 tentativas possiveis \n");
+		printf("<<<JOGO DE CACA AO TESOURO>>> \n");
+		printf("* Entre os X na matriz existe um # \n");
+		printf("* Encontre a posicao onde esta escondido o %c na matriz \n",vet[x1][x2]);
+		printf("* Tente adivinhar em que linha e coluna esta o %c  \n", vet[x1][x2]);
+		printf("\n");
+		printf("\n");
 	
-	tentativa = 3;
+	tentativas = 1;
 	
-	while(tentativa > 0){
+	while(true){
 		
 		
-		printf("digite a a linha onde se encontra: ");
+		printf("_digite a a linha onde se encontra(0 a 4): ");
 		scanf("%d",&linha);
 		
-		printf("digite a coluna: ");
+		printf("_digite a coluna(0 a 4): ");
 		scanf("%d",&coluna);
 		
-		if(linha == x1 && coluna == x2){
-			printf("parabens tesouro encontrado. VENCEU O DESAFIO!");
-			break;
+		
+		if(linha > 4 || linha < 0){
+			 printf("posicao invalida\n");
+			 
+		}else if(coluna > 4 || coluna<0){
+			 printf("posicao invalida\n");
+			 	
+		}else{
 			
-		}else if(linha < x1 && coluna < x2){
-			printf("posicao errada! \n");
-			printf("# A posicao esta mais a baixo e a direirta! \n");
-			printf("** Tentativa restante: %d \n",tentativa -1);
+			if(linha == x1 && coluna == x2){
+				printf("\n");
+				printf("parabens tesouro encontrado. VENCEU O DESAFIO! \n");
+				break;
+				
+			}else if(linha < x1 && coluna < x2){
+				printf("posicao errada! \n");
+				printf("# A posicao esta mais a baixo e a direirta! \n");
+				
+				
+			}else if(linha > x1 && coluna >x2){
+				printf("posicao errada! \n");
+				printf("# A posicao esta mais a cima e a esquerda! \n");
+				
+			}else if(linha > x1 && coluna < x2 ){
+				printf("posicao errada! \n");
+				printf("# A posicao esta mais a cima e direita \n");
+				
+			}else if(linha < x1 && coluna > x2){
+				printf("posicao errada! \n");
+				printf("# A posicao esta mais abaixo e a esquerda \n");
+				
+			} else if( linha < x1 && coluna == x2){
+				printf("posicao errada! \n");
+				printf("# A posicao esta mais a baixo \n");
+				
+			} else if(linha > x1 && coluna == x2){
+				printf("posicao errada! \n");
+				printf("# A posicao esta mais em cima \n");
+				
+			} else if(linha == x1 && coluna < x2){
+				printf("posicao errada! \n");
+				printf("# A posicao esta mais a direita \n");
+	
+				
+			} else if(linha == x1 && coluna > x2){
+				printf("posicao errada! \n");
+				printf("# A posicao esta mais a esquerda \n");
+		
+				
+			} else {
+				
+				printf("posicao errada! \n");
+				printf("-- Muito longe de acertar \n");
+			}
+			
+			tentativas++;
+			
+			}			
 			
 			
-		}else if(linha > x1 && coluna >x2){
-			printf("posicao errada! \n");
-			printf("# A posicao esta mais a cima e a esquerda! \n");
-			printf("** Tentativa restante: %d \n",tentativa-1);
-			
-		}else if(linha > x1 && coluna < x2 ){
-			printf("posicao errada! \n");
-			printf("# A posicao esta mais a cima e direita \n");
-			printf("** Tentativa restante: %d \n",tentativa-1);
-			
-		}else if(linha < x1 && coluna > x2){
-			printf("posicao errada! \n");
-			printf("# A posicao esta mais abaixo e a esquerda \n");
-			printf("** Tentativa restante: %d \n",tentativa-1);
-			
-		} else if( linha < x1 && coluna == x2){
-			printf("posicao errada! \n");
-			printf("# A posicao esta mais a baixo \n");
-			printf("** Tentativa restante: %d \n",tentativa-1);
-			
-		} else if(linha > x1 && coluna == x2){
-			printf("posicao errada! \n");
-			printf("# A posicao esta mais em cima \n");
-			printf("** Tentativa restante: %d \n",tentativa-1);
-			
-		} else if(linha == x1 && coluna < x2){
-			printf("posicao errada! \n");
-			printf("# A posicao esta mais a direita \n");
-			printf("** Tentativa restante: %d \n",tentativa-1);
-			
-		} else if(linha == x1 && coluna > x2){
-			printf("posicao errada! \n");
-			printf("# A posicao esta mais a esquerda \n");
-			printf("** Tentativa restante: %d \n",tentativa-1);
-			
-		} else {
-			
-			printf("posicao errada! \n");
-			printf("-- Muito longe de acertar \n");
-			printf("** Tentativa restante: %d \n",tentativa-1);
 		}
-		tentativa--;
+
+
 		
-		
-	}
-	
-	
-	
-	
-	
-	
+
+	printf(">>>O tesouro estava nas cordenadas [%d] e [%d] \n",x1,x2);
+	printf(">>>Precisou de %d tentativas para vencer o desafio!",tentativas);
 	
 	
 	return 0;
