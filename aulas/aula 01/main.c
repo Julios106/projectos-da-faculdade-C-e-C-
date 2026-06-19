@@ -2,89 +2,58 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <string.h>
 
-/*
-	for-repitir um numero de vezes
-	while -repete enquanto a condicao e falsa e para quando a condicao verdadeira
-	
-	
-	for(chamaV ; condicao ; uque acontece){
-	
-		codigo
-	}
-	
-	j++ -> j = j + 1;
-	j+= 10; -> j = j + 10;
-	
-	j-- -> j = j - 1;
-	j-= 10; -> j = j - 10; 
-	
-	
-	
-*/
-
-/*
-
-	while(condicao){
-		
-		uque vai repitir ate que a condicao seja verdadeira
-		
-	}
-	
-	true (1)
-
-*/
 
 
 
 int main() {
+	//tipo nome[n][j];
 	
-	/*
-		
-		if(condicao){
-			codigo que sera executado	
-		}
-			
-		if(condicao){
-			codigo que sera executado se a condicao for verdadeira
-		
-		}else{
-			
-			codigo que sera executado se a condicao for falsa
-		
-		}
-		
-		
-		
-	*/
+	int matriz[4][4];
+	int n,j;
 	
-	float valor,total,desconto;
-	
-	//0,10
-	
-	valor = 6000;
-	float percentagem = 0.10;
-	desconto = valor * percentagem;
-	printf("%.2f \n",desconto);
-	
-	total = valor - desconto;
-	printf("%.2f",total);
-	
-	
-	
-	
-	
-	
-	
-	/*
-	
-	
-	*/
-	
-	
-		
-		
 
+	
+	/*
+		{11111},{11111},{11111},{11111},{11111}
+		
+	
+		[2] [] [] [] []
+		[4] [] [] [] []
+		[] [] [] [] []
+		[] [] [] [] []
+		[] [] [] [] [3]
+			
+	*/
+	//percorer o vector para atribuir valores
+	for(n=0;n<4;n++){
+		for(j=0;j<4;j++){
+			matriz[n][j]=1;
+		}
+		
+	}
+	
+	//percorer vector para mostrar valores
+	for(n=0;n<4;n++){
+		for(j=0;j<4;j++){
+			printf("                   %d                     ",matriz[n][j]);
+		}
+		
+		printf("\n");
+	}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
 	
 	return 0;
 	

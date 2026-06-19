@@ -3,17 +3,16 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
-#define MAX 2
+#define MAX 5
 
 
-void  mostarProduto(int id,char nome[50],int n_serie,float precoVenda,float precoCompra){
-	printf("Novo produto registrado\n");
+void  mostarProduto(int id,char nome[50],int n_serie,int stoque,float precoVenda,float precoCompra){
 	printf("Id:%d\n",id);
 	printf("Nome:%s\n",nome);
 	printf("Numero de serie:%d\n",n_serie);
-	//printf("Stoque:%d",stoque);
+	printf("Stoque:%d\n",stoque);
 	printf("Preco de venda:%.2f MT\n",precoVenda);
-	printf("Preco de compra:%.2f MT\n",precoCompra);
+	printf("Preco de compra:%.2f MT\n \n",precoCompra);
 
 }
 
@@ -23,22 +22,54 @@ struct Produto {
 	int n_serie;
 	float preco_venda;
 	float preco_compra;
+	int stoque;
 };
 
 struct Produto produtos[MAX];
 int totalProdutos = 0;
 
+void carregarProdutos(){
+	FILE*arquivo;
+	
+	arquivo = fopen("produtos.dat","rb");
+	
+	if(arquivo == NULL){
+		printf("Nenhum produto encontrado \n");
+		return;
+	}
+	
+	totalProdutos = fread(produtos,sizeof(struct Produto),MAX,arquivo);
+	printf("Produt0s carregados com sucesso \n");
+	printf("Total de produtos cadastrado no sistema %d \n \n",totalProdutos);
+	
+	fclose(arquivo);
+	
+
+		
+};
+
+void salvarProdutos(){
+	FILE*arquivo;
+	
+	arquivo = fopen("produtos.dat","wb");
+	
+	fwrite(produtos,sizeof(struct Produto),totalProdutos,arquivo);
+	
+	fclose(arquivo);
+	printf("Produts salvos com sucesso \n \n");	
+	
+};
+
 void cadastrarProduto() {
 	char nome[50];
 	int opcao;
 	
-
 	
 	while (1){
 		
 		if(totalProdutos >= MAX){
-		printf("Sem espaco no stock..");
-		return;
+			printf("Sem espaco no stock..");
+			return;
 		}
 
 		
@@ -46,6 +77,7 @@ void cadastrarProduto() {
 		printf("Selecine uma opcao:");
 		scanf("%d",&opcao);
 		getchar();//limpa o buffer pra nao atrapalar o fgets
+		system("cls");
 		
 		if(opcao == 1){
 				srand(time(NULL));
@@ -66,6 +98,9 @@ void cadastrarProduto() {
 				printf("Numero de serie:");
 				scanf("%d",&produtos[totalProdutos].n_serie);
 				
+				printf("Stoque do produto:");
+				scanf("%d",&produtos[totalProdutos].stoque);
+				
 				printf("Digite o valor de compra do produto:");
 				scanf("%f",&produtos[totalProdutos].preco_compra);
 				
@@ -73,7 +108,9 @@ void cadastrarProduto() {
 				scanf("%f",&produtos[totalProdutos].preco_venda);
 				
 				produtos[totalProdutos].id = idRamdom;
-				mostarProduto(produtos[totalProdutos].id,produtos[totalProdutos].nome_produto,produtos[totalProdutos].n_serie,produtos[totalProdutos].preco_venda,produtos[totalProdutos].preco_compra);
+				system("cls");
+				printf(">>>Novo produto registrado<<<\n");
+				mostarProduto(produtos[totalProdutos].id,produtos[totalProdutos].nome_produto,produtos[totalProdutos].n_serie,produtos[totalProdutos].stoque,produtos[totalProdutos].preco_venda,produtos[totalProdutos].preco_compra);
 				
 				totalProdutos++;		
 						
@@ -88,33 +125,85 @@ void cadastrarProduto() {
 	
 
 }
-/*
-cadastrarProduto() 
 
-pedir dados
-    ?
-validar dados
-    ?
-criar struct Produto
-    ?
-gerar ID
-    ?
-guardar no array/ficheiro
-    ?
-confirmar
-*/
 
 void listarProdutos(){
-	//logica para listar produtos
-	printf("nada feito ainda");
+	int i;
+	if(totalProdutos == 0){
+		printf("## Ainda nao tem produtos\n \n");
+	}else{
+		printf(">>> LISTA DE PRODUTOS DO SUPERMERCADO <<< \n");
+		for (i = 0;i<totalProdutos ; i++){	
+		mostarProduto(produtos[i].id,produtos[i].nome_produto,produtos[i].n_serie,produtos[i].stoque,produtos[i].preco_venda,produtos[i].preco_compra);
+		
+	}	
+		
+	} 
 }
 
 void buscarProduto(){
-	//logica para buscar um produto
-	printf("nada feito ainda");
+	
+	int opc,idNumber,n_serie,i;
+	char nome[50];
+	int encontrado = false;
+	
+	while(1){
+		printf(">>>Escolha a opcao para o metodo de busca \n");
+		printf("1-Id do produto\n2-Numero de serie\n3-Nome do produto\n0-Sair\n");
+		printf("Opcao:");
+		scanf("%d",&opc);
+		system("cls");
+		getchar();
+		
+		if(opc == 0){
+			break;
+		}else if(opc == 1){
+			printf("Digite o id do produto:");
+			scanf("%d",&idNumber);
+			
+			for(i=0 ; i<totalProdutos ; i++){
+				if(produtos[i].id == idNumber){
+					printf(">>>Produto Encontrado \n");
+					mostarProduto(produtos[i].id,produtos[i].nome_produto,produtos[i].n_serie,produtos[i].stoque,produtos[i].preco_venda,produtos[i].preco_compra);
+					return encontrado = true;
+				}
+			}
+			
+			printf(">>>Produto nao Encontrado \n");
+			
+		}else if(opc == 2){
+			printf("Digite o numero de serie do produto:");
+			scanf("%d",&n_serie);
+			for(i=0 ; i<totalProdutos ; i++){
+				if(produtos[i].n_serie== n_serie){
+					printf(">>>Produto Encontrado \n");
+					mostarProduto(produtos[i].id,produtos[i].nome_produto,produtos[i].n_serie,produtos[i].stoque,produtos[i].preco_venda,produtos[i].preco_compra);
+					return encontrado = true;
+				}
+			}
+			
+			printf(">>>Produto nao Encontrado \n");	
+		}else if(opc == 3){
+			printf("Escreva o nome do produto:");
+			fgets(nome,50,stdin);
+			nome[strcspn(nome,"\n")]='\0';
+			for(i=0 ; i<totalProdutos ; i++){
+				int comparacao = strcmp(produtos[i].nome_produto,nome); //se for igual retorna 0
+				
+				if(comparacao == 0){
+					printf(">>>Produto Encontrado \n");
+					mostarProduto(produtos[i].id,produtos[i].nome_produto,produtos[i].n_serie,produtos[i].stoque,produtos[i].preco_venda,produtos[i].preco_compra);
+					return encontrado = true;
+				}
+			}
+			printf(">>>Produto nao Encontrado \n");			
+			
+		}
+	}
+	
 }
 
 void venderProduto(){
 	//logica para venda de produtos(muito importante we got to be carefull)
-	printf("nada feito ainda");
+	printf("nada feito ainda\n"); 
 }
