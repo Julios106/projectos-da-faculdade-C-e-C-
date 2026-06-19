@@ -134,9 +134,9 @@ void listarProdutos(){
 	}else{
 		printf(">>> LISTA DE PRODUTOS DO SUPERMERCADO <<< \n");
 		for (i = 0;i<totalProdutos ; i++){	
-		mostarProduto(produtos[i].id,produtos[i].nome_produto,produtos[i].n_serie,produtos[i].stoque,produtos[i].preco_venda,produtos[i].preco_compra);
+			mostarProduto(produtos[i].id,produtos[i].nome_produto,produtos[i].n_serie,produtos[i].stoque,produtos[i].preco_venda,produtos[i].preco_compra);
 		
-	}	
+		}	
 		
 	} 
 }
@@ -203,7 +203,36 @@ void buscarProduto(){
 	
 }
 
-void venderProduto(){
-	//logica para venda de produtos(muito importante we got to be carefull)
-	printf("nada feito ainda\n"); 
+void interfaceProdutos(){
+		int opc;
+	
+	carregarProdutos();
+	
+	while (true){
+		printf("1-Cadastrar Produto\n2-Listar Produto\n3-Buscar Produto\n4-Nova Venda\n0-Sair\n");
+		printf("Selecione a opcao;");
+		scanf("%d",&opc);
+		system("cls");
+		
+		if(opc == 1){
+			cadastrarProduto();
+		}else if(opc == 2){
+			listarProdutos();
+		}else if(opc == 3){
+			buscarProduto();
+		}else if(opc == 4){
+			printf("xo\n");
+		}else if(opc == 0){
+			printf("saindo ...\n");
+			break;
+		}
+		else {
+			printf("opcao invalida\n");
+		}
+		
+	}
+	
+	salvarProdutos();
 }
+
+
