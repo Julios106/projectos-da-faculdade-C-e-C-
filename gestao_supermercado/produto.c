@@ -3,18 +3,12 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
-#define MAX 5
+#include "vendas.h"
+#include "dashboard.h"
+#include "config.h"
 
 
-void  mostarProduto(int id,char nome[50],int n_serie,int stoque,float precoVenda,float precoCompra){
-	printf("Id:%d\n",id);
-	printf("Nome:%s\n",nome);
-	printf("Numero de serie:%d\n",n_serie);
-	printf("Stoque:%d\n",stoque);
-	printf("Preco de venda:%.2f MT\n",precoVenda);
-	printf("Preco de compra:%.2f MT\n \n",precoCompra);
 
-}
 
 struct Produto {
 	int id;
@@ -28,6 +22,18 @@ struct Produto {
 struct Produto produtos[MAX];
 int totalProdutos = 0;
 
+//funcao para mostrar produtos sempre que necessario
+void  mostarProduto(int id,char nome[50],int n_serie,int stoque,float precoVenda,float precoCompra){
+	printf("Id:%d\n",id);
+	printf("Nome:%s\n",nome);
+	printf("Numero de serie:%d\n",n_serie);
+	printf("Stoque:%d\n",stoque);
+	printf("Preco de venda:%.2f MT\n",precoVenda);
+	printf("Preco de compra:%.2f MT\n \n",precoCompra);
+
+}
+
+//funcao para carregar produtos do ficheiro produtos.dat
 void carregarProdutos(){
 	FILE*arquivo;
 	
@@ -39,7 +45,7 @@ void carregarProdutos(){
 	}
 	
 	totalProdutos = fread(produtos,sizeof(struct Produto),MAX,arquivo);
-	printf("Produt0s carregados com sucesso \n");
+	printf("Produtos carregados com sucesso \n");
 	printf("Total de produtos cadastrado no sistema %d \n \n",totalProdutos);
 	
 	fclose(arquivo);
@@ -48,6 +54,7 @@ void carregarProdutos(){
 		
 };
 
+//funcao para salvar qualquer alteracao sempre que o programa e encerrado no produtos.dat
 void salvarProdutos(){
 	FILE*arquivo;
 	
@@ -60,6 +67,7 @@ void salvarProdutos(){
 	
 };
 
+//funcao para cadastrar produtos
 void cadastrarProduto() {
 	char nome[50];
 	int opcao;
@@ -67,6 +75,7 @@ void cadastrarProduto() {
 	
 	while (1){
 		
+		//verificar se tem expaco no stock
 		if(totalProdutos >= MAX){
 			printf("Sem espaco no stock..");
 			return;
@@ -76,7 +85,7 @@ void cadastrarProduto() {
 		printf("1-Novo produto\n0-Sair\n");
 		printf("Selecine uma opcao:");
 		scanf("%d",&opcao);
-		getchar();//limpa o buffer pra nao atrapalar o fgets
+		getchar();// pra nao atrapalar o fgets
 		system("cls");
 		
 		if(opcao == 1){
@@ -91,21 +100,38 @@ void cadastrarProduto() {
 				
 				if(strlen(nome)==0){
 					printf("O campo nao pode estar vazio \n");
-				}else{
-					strcpy(produtos[totalProdutos].nome_produto,nome);
+					continue;
 				}
+				
+				strcpy(produtos[totalProdutos].nome_produto,nome);
 				
 				printf("Numero de serie:");
 				scanf("%d",&produtos[totalProdutos].n_serie);
 				
+				
 				printf("Stoque do produto:");
 				scanf("%d",&produtos[totalProdutos].stoque);
+				
+				if(produtos[totalProdutos].stoque < 0){
+					printf("Estoque invalido");
+					continue;
+				}
 				
 				printf("Digite o valor de compra do produto:");
 				scanf("%f",&produtos[totalProdutos].preco_compra);
 				
+				if(produtos[totalProdutos].preco_compra < 0){
+					printf("Preco de compra invalido");
+					continue;
+				}
+				
 				printf("digite o preco de venda:");
 				scanf("%f",&produtos[totalProdutos].preco_venda);
+				
+				if(produtos[totalProdutos].preco_venda < 0){
+					printf("Preco de venda invalido");
+					continue;
+				}
 				
 				produtos[totalProdutos].id = idRamdom;
 				system("cls");
@@ -203,13 +229,14 @@ void buscarProduto(){
 	
 }
 
-void interfaceProdutos(){
+void interface(){
 		int opc;
 	
 	carregarProdutos();
+	carregarVendas();
 	
 	while (true){
-		printf("1-Cadastrar Produto\n2-Listar Produto\n3-Buscar Produto\n4-Nova Venda\n0-Sair\n");
+		printf("1-Cadastrar Produto\n2-Listar Produto\n3-Buscar Produto\n4-Nova Venda\n5-Dashboard\n0-Sair\n");
 		printf("Selecione a opcao;");
 		scanf("%d",&opc);
 		system("cls");
@@ -221,7 +248,9 @@ void interfaceProdutos(){
 		}else if(opc == 3){
 			buscarProduto();
 		}else if(opc == 4){
-			printf("xo\n");
+			nova_venda();
+		}else if(opc == 5){
+			dashboard_inteface();
 		}else if(opc == 0){
 			printf("saindo ...\n");
 			break;

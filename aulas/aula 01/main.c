@@ -4,74 +4,71 @@
 #include <stdbool.h>
 #include <string.h>
 
-/*
-	tipoFuncao nomeFuncao( parametros){
-		uque a funcao vai fazer
-	
-	}
 
+
+
+
+/*
+	-> como acessar um campo de vectores de struct
+	al[pasicao].campo para acessar;
+	al[0].nome;
+	al[1].nome;
+	al[2].nome;
+	
+	for	
 
 */
-
-
-int numero;
-
-//exemplo de funcao sem retorno e sem parametros:
-void saudacao(){
-	char nome[20];
-	printf("Hellow word \n");
-	printf("suca\n");
-	
-	soma(10,10,10);
+struct Produto {
+	char nome[50];
+	float preco;
+	int stoque;
 };
 
-//exemplo de funcao sem retorno com parametros:
-void soma(int n1,int n2,int n3){
-	int soma;
-	soma = n1 + n2 + n3;
+struct Produto produtos[3];
+
+void cadastrar_produto(){
+		int i;
 	
-	printf("A soma e :%d \n",soma);
+	for(i=0;i<3;i++){
+		
+		//i=1
+		printf("Nome do produto:\n");
+		scanf("%s",produtos[i].nome);
+		
+		
+		printf("Preco do produto: \n");
+		scanf("%f",&produtos[i].preco);
+		
+		printf("Quantidade em estoque do produto:\n");
+		scanf("%d",&produtos[i].stoque);
+		
+		system("cls");
+		
+		
+	}
 }
 
-//exemplo de funcao com retorno com parametros:
-float media(float nota1,float nota2,float nota3){
-	float media;
-	
-	media = (nota1+nota2+nota3)/3;
-	
-	return media;	
+void mostrar_produto(struct Produto edna[] ){
+	int i;
+	printf("\n \n");
+	for(i=0;i<3;i++){
+		printf("Nome do produto: %s \n",edna[i].nome);
+		printf("Preco:%.2f \n",edna[i].preco);
+		printf("Estoque:%d \n",edna[i].stoque);		
+	}
+
 	
 }
 
-//exemplo de funcao com retorno sem parametros:
-float mediaFinal(){
-	float media,nota1,nota2,nota3;
-	nota1=10;
-	nota2 = 20;
-	nota3 = 17;
-	
-	media = (nota1+nota2+nota3)/3;
-	
-	return media;	
-	
-}
-
+//[produto,produto,produto]
 
 int main() {
-	
-	//f(x)= x + 1; parametro e x
-	//chamando a funcao saudacao void e sem parametros:
-	saudacao();
-	
-	//chamando uma funcao void com parametros:
-	soma(10,20,30);
-	soma(100,200,200);
-	soma(3,2,1);
-	
-	
-	printf("A sua media e %.2f \n",media(20,10,1));
-	printf("A sua media final e %.2f \n",mediaFinal());
 
+	cadastrar_produto();
+	mostrar_produto(produtos);
+	
+
+	
 	
 	return 0;
 	

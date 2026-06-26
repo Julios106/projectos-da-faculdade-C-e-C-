@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "produto.h"
+#include "config.h"
 
 struct User {
 	char nome[50];
@@ -13,6 +14,10 @@ struct User {
 
 struct User newUser;
 
+/*
+	funcao! credencias de admin predefinidas para quando 
+	nao tiver o ficheiro binario auth.dat(quando o sistema e executado no novo supermercado)
+*/
 void loginAdmin(){
 	struct User userAdmin;
 	strcpy(userAdmin.nome,"admin");
@@ -44,6 +49,7 @@ void loginAdmin(){
 	}
 }
 
+//funcao para salvar usuario no ficheiro auth.dat
 void gravarUser(){
 	FILE*arquivo;
 	
@@ -54,6 +60,8 @@ void gravarUser(){
 	fclose(arquivo);
 }
 
+
+//funcao que sera executada depois de colocar as credenciais do admin(caso isso aconteca)
 void novoUsuario(){
 	char nome[50],senha[50];
 	
@@ -90,13 +98,15 @@ void novoUsuario(){
 
 }
 
+
+//esta funcao sera executada sempre que o propretario acessar o programa(compara com as credenciais do auth.dat)
 void loginUser(){
 	char nome[50],senha[50];
 	
 	while(1){
 		printf(">>Login ao sistema do proprietario<<\n");
 		
-		printf("Digite o snome:");
+		printf("Digite o seu nome:");
 		scanf("%49[^\n]s",&nome);
 		getchar();
 		
@@ -121,16 +131,21 @@ void loginUser(){
 	}
 	
 }
+
+//funcao que carrega as credenciais do ficheiro auth.dat
+//e onde foi implementada toda logica de autenticacao
 void carregarUser(){
 	FILE*arquivo;
 	
 	arquivo = fopen("auth.dat","rb");
 	
 	if(arquivo == NULL){
+		//caso nao existe o ficheiro auth.dat(loga com credenciais admin e depois vai na funcao novouser para criar conta)
 		printf("Bem vindo ao sistema log com os dados que o tecnico forneceu\n");
 		loginAdmin();
 		novoUsuario();		
 	}else {
+		//caso exista o ficheiro auth.dat
 		fread(&newUser,sizeof(struct User),1,arquivo);
 		fclose(arquivo);
 		loginUser();
@@ -143,9 +158,11 @@ void carregarUser(){
 }
 
 
-
+/*
+	onde e carregada as funcoes. primeira e carregar user onde contem toda logica de autenticacao 
+	e quando a autenticacao e validada ela passa para a funcao interface
+*/
 void userAuth(){
 	carregarUser();
-	interfaceProdutos();	
-
+	interface();	
 }
